@@ -1,10 +1,15 @@
+#![windows_subsystem = "windows"]
+
 use std::ptr::null_mut;
 use std::thread;
 use std::time::Duration;
 
 use windows::Win32::Foundation::{HWND, RECT};
 use windows::Win32::UI::Input::KeyboardAndMouse::{GetAsyncKeyState, VK_CONTROL, VK_E, VK_SHIFT};
-use windows::Win32::UI::WindowsAndMessaging::{GetForegroundWindow, GetSystemMetrics, GetWindowRect, HWND_TOP, SET_WINDOW_POS_FLAGS, SetWindowPos, SYSTEM_METRICS_INDEX};
+use windows::Win32::UI::WindowsAndMessaging::{
+    GetForegroundWindow, GetSystemMetrics, GetWindowRect, SetWindowPos, HWND_TOP,
+    SET_WINDOW_POS_FLAGS, SYSTEM_METRICS_INDEX,
+};
 
 unsafe fn center_window() {
     let hwnd: HWND = GetForegroundWindow();
@@ -26,10 +31,12 @@ unsafe fn center_window() {
     let x = (screen_width - width) / 2;
     let y = (screen_height - height) / 2;
 
-    SetWindowPos(hwnd, HWND_TOP, x, y, 0, 0, SET_WINDOW_POS_FLAGS(0x0001)).expect("TODO: panic message");
+    SetWindowPos(hwnd, HWND_TOP, x, y, 0, 0, SET_WINDOW_POS_FLAGS(0x0001))
+        .expect("TODO: panic message");
 }
 
 fn main() {
+    println!("Console");
     loop {
         let ctrl_pressed = unsafe { GetAsyncKeyState(VK_CONTROL.0 as i32) } < 0;
         let shift_pressed = unsafe { GetAsyncKeyState(VK_SHIFT.0 as i32) } < 0;
